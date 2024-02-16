@@ -13,7 +13,7 @@ MIFARE é uma série de chips de circuito integrado usados em cartões de proxim
 ![mifare1k](./images/MiFare1k.png)<br>
 ![mifare1klegend](./images/mifare1k_legend.png)
 
-Mais notavelmente, o bloco 0 é reservado para o ID único de cada tag (UID) e demais informações de fabricação, e o quarto bloco de cada setor para suas chaves e bits de acesso. Cada uma das chaves (A e B) pode ser associada a diferentes níveis de permissão para o setor, como somente leitura ou leitura e escrita. Basicamente, um leitor só pode ler ou escrever em um setor de alguma tag caso possua a chave correta para aquele setor (e as condições de acesso, definidas pelos bits de acesso permitam).<br>
+Mais notavelmente, o bloco 0 é reservado para o ID único de cada tag (UID) e demais informações de fabricação, e o quarto bloco de cada setor para suas chaves e bits de acesso. Cada uma das chaves (A e B) pode ser associada a diferentes níveis de permissão para o setor, como somente leitura ou leitura e escrita. Basicamente, um leitor só pode ler ou escrever em um setor de alguma tag caso possua a(s) chave(s) correta(s) para aquele setor (e as condições de acesso, definidas pelos bits de acesso permitam).<br>
 Mais informações sobre MIFARE [aqui](https://en.wikipedia.org/wiki/MIFARE)
 
 **Proxmark**<br>
