@@ -30,4 +30,55 @@ Com o proxmark conectado a uma porta USB, podemos acessar sua interface com o co
 
 ![pm3](./images/pm3.png)
 
-Com o cartão posicionado em cima do proxmark e o comando `auto` podemos tentar identificar com que tipo de tag estamos lidando:
+Com o cartão posicionado em cima do proxmark e o comando `auto` podemos identificar com que tipo de tag estamos lidando
+
+![auto](./images/auto.png)
+
+O proxmark identificou que se trata de um cartão MIFARE Classic 1K o qual é divido em 16 setores de 4 blocos cada, ou seja, precisamos de 16 * 2 = 32 chaves para pwná-lo. A boa notícia é que o proxmark também detectou que o prng (pseudo-random number generator) do cartão é fraco, o que significa que esse está sujeito a certos ataques:<br>
+**Darkside**: explora vulnerabilidades na implementação de criptografia CRYPTO-1 para tentar encontrar uma chave<br>
+**Nested**: ou ataque aninhado, que utiliza uma chave conhecida para encontrar as demais<br>
+Sigo o conselho do proxmark e uso o comando `hf mf chk`, que testa chaves padrão nos setores da tag
+
+![chk](./images/chk.png)
+
+Infelizmente não encontramos nenhuma :/. Tento apelar pro `hf mf autopwn`, que roda todos os ataques possíveis
+
+![autopwn](./images/autopwn_fail.png)
+
+mas aparentemente esse cartão é imune ao darkside, e sem nenhuma chave não conseguimos rodar um ataque aninhado. Nesse ponto achei que teria que pegar meu computador, proxmark e cartão do ônibus, me aventurar no mundo real, possivelmente tocar na grama e quem sabe conseguir farejar um trace enquanto o motorista tenta me expulsar por "hackear o ônibus". Felizmente, o comando `hf mf chk` permite a entrada de dicionários de chaves como argumento, e, utilizando o dicionário fornecido no repositório do firmware, [aqui](https://github.com/RfidResearchGroup/proxmark3/blob/master/client/dictionaries/mfc_default_keys.dic), temos...
+
+![keys!](./images/onibus_dic.png)
+
+...chaves! Só algumas, mas uma já é o suficiente. Com isso, conseguimos rodar o `hf mf nested`
+
+![nested1](./images/nested1.png)
+
+.<br>.<br>.
+
+![nested2](./images/nested2.png)
+
+Conseguindo assim todas as chaves. Muito bonito ver todo esse texto verde xD. Agora só falta fazer o dump do cartão
+
+![dump](./images/dump.png)
+
+E carregar o dump em um cartão mágico (cartão que simula uma tag MIFARE, mas que permite ter seu UID editado).
+
+![load](./images/load1.png)
+
+As condições de acesso não permitiram copiar o bloco 0 do setor 0, que contém o UID do cartão original, por isso o erro na leitura. Mas tudo bem, podemos reconstruir esse bloco, pois sabemos o UID
+
+![setuid](./images/clone_info.png)
+
+Para comparar com o original:
+
+![info](./images/info.png)
+
+E é isso, cartão clonado :). Fazendo alguns testes no Mundo Real<sup>TM</sup> (estação de recarga automática), descobri que o saldo é armazenado no próprio cartão, ou seja, deve ser possível editá-lo. Mas isso fica pra uma próx(mark)ima
+
+# Fontes
+https://en.wikipedia.org/wiki/Radio-frequency_identification<br>
+https://en.wikipedia.org/wiki/MIFARE<br>
+https://luemmelsec.github.io/gaylord-M-FOCker-ready-to-pwn-your-MIFARE-tags/<br>
+https://jjensn.com/mifare-easy-targets<br>
+https://github.com/RfidResearchGroup/proxmark3<br>
+https://www.youtube.com/@iceman1001
