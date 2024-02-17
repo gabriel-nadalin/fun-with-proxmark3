@@ -16,7 +16,7 @@ MIFARE é uma série de chips de circuito integrado usados em cartões de proxim
 Mais notavelmente, o bloco 0 é reservado para o ID único de cada tag (UID) e demais informações de fabricação, e o quarto bloco de cada setor para suas chaves e bits de acesso. Cada uma das chaves (A e B) pode ser associada a diferentes níveis de permissão para o setor, como somente leitura ou leitura e escrita. Basicamente, um leitor só pode ler ou escrever em um setor de alguma tag caso possua a(s) chave(s) correta(s) para aquele setor (e as condições de acesso, definidas pelos bits de acesso, permitam).<br>
 Mais informações sobre MIFARE [aqui](https://en.wikipedia.org/wiki/MIFARE)
 
-**Proxmark**<br><img src="url" alt="alt text" width="whatever" height="whatever">
+**Proxmark**<br>
 Proxmark é um dispositivo que permite ler, escrever e simular tags RFID e farejar comunicações entre leitor e tag, e suporta tags lf e hf (low frequency [120-150 kHz] e high frequency [13.56 MHz]).
 
 <img src="https://github.com/gabriel-nadalin/fun-with-proxmark3/assets/131068505/b2759fde-1d1c-4f6c-b9de-6e5553795201" alt="proxmark" width="400">
